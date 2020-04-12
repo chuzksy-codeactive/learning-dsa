@@ -9,7 +9,7 @@ import Home from './components/Home';
 
 function App() {
   return (
-    <div>
+    <div className="App">
       <Router>
         <Header />
         <Route path="/" exact component={Home} />
