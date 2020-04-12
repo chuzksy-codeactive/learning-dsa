@@ -7,13 +7,13 @@ const Header = () => (
       <Link to="/" className="brand-logo">Learning &lt;DSA&gt;</Link>
       <ul id="nav-mobile" className="right hide-on-med-and-down">
         <li>
-          <Link exact to="/beginner">Beginner</Link>
+          <Link to="/beginner">Beginner</Link>
         </li>
         <li>
-          <Link exact to="/intermediate">Intermedate</Link>
+          <Link to="/intermediate">Intermedate</Link>
         </li>
         <li>
-          <Link exact to="/advance">Advance</Link>
+          <Link to="/advance">Advance</Link>
         </li>
       </ul>
     </div>

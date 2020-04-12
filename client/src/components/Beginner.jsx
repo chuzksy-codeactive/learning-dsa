@@ -1,8 +1,9 @@
 import React from 'react'
+import Layout from './Layout'
 
 const Beginner = () => (
   <div className="container">
-    <h3>Beginner</h3>
+    <Layout />
   </div>
 );
 

@@ -9,7 +9,7 @@ const Home = () => (
         <h3>Coding with<br /> Data Structures & Algorithms</h3>
         <p>Enhance your problem solving skills as you learn how to breakdown problems into pieces using the efficient data structures and algorithms</p>
         <p>Solutions to major coding problems in Javascript syntax</p>
-        <a className="waves-effect waves-light red darken-3 btn-large">Start Learning</a>
+        <a href="#" className="waves-effect waves-light red darken-3 btn-large">Start Learning</a>
       </div>
       <div className="home-right">
         <img src="img/programming.svg" alt="Programming with DSA"/>
