@@ -1,9 +1,13 @@
 const express = require('express');
 const cors = require('cors');
+const mongoose = require('mongoose');
+
+const keys = require('./config/keys');
 
 const app = express();
 
 app.use(cors());
+mongoose.connect(keys.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true }, (e) => console.log(e));
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));
