@@ -1,0 +1,32 @@
+.sidebar {
+  padding: 10px 20px;
+}
+
+.sidebar h5 {
+  font-weight: 700;
+  background-color: #bbdefb;
+  padding: 10px;
+  color: #0d47a1;
+}
+
+.sidebar ul li {
+  margin: 10px 0;
+  padding: 10px 10px;
+}
+
+.sidebar ul li:hover {
+  background-color: #e3f2fd;
+}
+
+.sidebar ul li a{
+  color: #424242;
+  font-size: 16px;
+}
+
+.tabs a {
+  color: #1565c0 !important;
+}
+
+.tabs .indicator {
+  background-color: #90caf9;
+}
