@@ -6,8 +6,11 @@ const Header = (props) => (
     <div className="nav-wrapper container">
       <Link to="/" className="brand-logo">Learning &lt;DSA&gt;</Link>
       <ul id="nav-mobile" className="right hide-on-med-and-down">
+        <li className={props.location.pathname === '/new-challenge' ? 'active' : ''}>
+          <Link to="/new-challenge"><i class="large material-icons">add</i></Link>
+        </li>
         <li className={props.location.pathname === '/beginner' ? 'active' : ''}>
-          <Link to="/beginner">Beginner</Link>
+          <Link to="/new-challenge">Beginner</Link>
         </li>
         <li className={props.location.pathname === '/intermediate' ? 'active' : ''}>
           <Link to="/intermediate">Intermedate</Link>

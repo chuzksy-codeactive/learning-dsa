@@ -6,6 +6,7 @@ import Beginner from './components/Beginner';
 import Intermediate from './components/Intermediate';
 import Advance from './components/Advance';
 import Home from './components/Home';
+import NewChallenge from './components/NewChallenge';
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/beginner" component={Beginner} />
         <Route path="/intermediate" component={Intermediate} />
         <Route path="/advance" component={Advance} />
+        <Route path="/new-challenge" component={NewChallenge} />
       </Router>
     </div>
   );
