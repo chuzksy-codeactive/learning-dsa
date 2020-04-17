@@ -5,7 +5,7 @@ const beginnerSchema = new Schema({
   title: String,
   question: String,
   pseudocode: [String],
-  solution: [String],
+  solutions: [String],
   dateCreated: Date
 });
 
