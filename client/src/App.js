@@ -8,6 +8,7 @@ import Advance from './components/Advance';
 import Home from './components/Home';
 import NewChallenge from './components/NewChallenge';
 
+import 'materialize-css/dist/css/materialize.min.css';
 
 function App() {
   return (

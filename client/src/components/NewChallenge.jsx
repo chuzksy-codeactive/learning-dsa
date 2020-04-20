@@ -1,12 +1,14 @@
 import React from 'react'
-import { withRouter } from 'react-router-dom';
+import NewChallengeForm from './NewChallengeForm';
+import { connect } from 'react-redux';
+import * as actions from '../actions';
 
-const NewChallenge = (props) => {
-  return (
-    <div className="container">
-      <h4>New Challenge</h4>
-    </div>
-  )
-};
+class NewChallenge extends React.Component {
+  render() {
+    return (
+      <NewChallengeForm />
+    )
+  }
+}
 
-export default withRouter(NewChallenge);
+export default NewChallenge;
