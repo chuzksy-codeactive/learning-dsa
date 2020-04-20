@@ -7,6 +7,25 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 import { withRouter } from 'react-router-dom';
 
+import Editor from 'react-simple-code-editor';
+import { highlight, languages } from 'prismjs/components/prism-core';
+import 'prismjs/components/prism-clike';
+import 'prismjs/components/prism-javascript';
+import 'prismjs/components/prism-markup';
+import '../../src/styles/css/Editor.css';
+import dedent from 'dedent';
+
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
+
+require('prismjs/components/prism-jsx');
+
+const code = function add(a, b) {
+  return a + b;
+};
+
+
+
 const FIELDS = [
   { label: 'Title', name: 'title' },
   { label: 'Question', name: 'question' },
@@ -19,7 +38,8 @@ class NewChallengeForm extends React.Component {
     pseudocode: [],
     title: '',
     question: '',
-    solutions: []
+    solutions: [],
+    code: dedent``
   }
 
   onAddPseudocode = (values) => {
@@ -30,13 +50,34 @@ class NewChallengeForm extends React.Component {
     }
   }
 
-  onRemove = (index) => {
+  onAddCode = () => {
+    if (this.state.code) {
+      this.setState({
+        solutions: [...this.state.solutions, this.state.code]
+      }, () => {
+        console.log(this.state.code, this.state.solutions);
+        this.setState({
+          code: dedent``
+        });
+      });
+    }
+  }
+
+  onRemovePseudocode = (index) => {
     if (this.state.pseudocode.length > 0) {
       this.setState({
         pseudocode: this.state.pseudocode.filter((item, i) => i !== index)
       })
     }
-  }
+  };
+
+  onRemoveCode = (index) => {
+    if (this.state.solutions.length > 0) {
+      this.setState({
+        solutions: this.state.solutions.filter((item, i) => i !== index)
+      })
+    }
+  };
 
   onSubmitChallenge = ({ title, question }) => {
     this.setState({
@@ -57,19 +98,55 @@ class NewChallengeForm extends React.Component {
               <Field key="title" component={ChallengeField} type="text" label="Title" name="title" />
               <Field key="question" component={ChallengeField} type="text" label="Question" name="question" />
               <Field key="pseudocode" component={ChallengeField} type="text" label="Pseudocode" name="pseudocode" />
-              <a className="waves-effect waves-light btn btn-small" onClick={() => this.onAddPseudocode(formValues)}><i className="material-icons right">add_circle_outline</i>add</a>
+              <a className="waves-effect waves-light btn-small" onClick={() => this.onAddPseudocode(formValues)}><i className="material-icons right">add_circle_outline</i>add</a>
               {(this.state.pseudocode.length > 0) && <ul className="collection with-header" >
                 <li className="collection-header"><h5>Pseudocodes</h5></li>
                 {this.state.pseudocode.map((item, i) => (
                   <li key={i} className="collection-item">
                     <div>{item}
-                      <a href="#!" className="secondary-content" onClick={() => this.onRemove(i)}>
+                      <a href="#!" className="secondary-content" onClick={() => this.onRemovePseudocode(i)}>
                         <i className="material-icons red-text">delete</i>
                       </a>
                     </div>
                   </li>
                 ))}
               </ul>}
+              <div className="container_editor_area">
+                <Editor
+                  placeholder="Type some code here…"
+                  value={this.state.code}
+                  onValueChange={code => this.setState({ code })}
+                  highlight={code => highlight(code, languages.jsx)}
+                  padding={10}
+                  className="container__editor"
+                  style={{
+                    fontFamily: '"Fira code", "Fira Mono", monospace',
+                    fontSize: 12,
+                    marginBottom: 20,
+                    marginTop: 10,
+                  }}
+                />
+                <a className="waves-effect waves-light btn-small" onClick={this.onAddCode} ><i className="material-icons right">add_circle_outline</i>add</a>
+
+                {
+                  this.state.solutions && this.state.solutions.map((codeString, i) => (
+                    <div className="col s12" key={i}>
+                      <h5>{`Solution ${i + 1}`}</h5>
+                      <SyntaxHighlighter
+                        language="javascript"
+                        style={prism}
+                        key={i}>
+                        {codeString}
+                      </SyntaxHighlighter>
+                      <div>
+                        <a href="#!" className="secondary-content" onClick={() => this.onRemoveCode(i)}>
+                          <i className="material-icons red-text tiny">clear</i>
+                        </a>
+                      </div>
+                    </div>
+                  ))
+                }
+              </div>
               <button type="submit" className="teal btn-flat right white-text">
                 Submit
               <i className="material-icons right">done</i>
