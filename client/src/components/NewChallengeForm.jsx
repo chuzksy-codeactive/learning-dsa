@@ -2,6 +2,7 @@ import React from 'react'
 import _ from 'lodash';
 import { reduxForm, Field } from 'redux-form';
 import ChallengeField from './ChallengeField';
+import '../styles/css/NewChallengeForm.css';
 
 import { connect } from 'react-redux';
 import * as actions from '../actions';
@@ -39,13 +40,16 @@ class NewChallengeForm extends React.Component {
     title: '',
     question: '',
     solutions: [],
-    code: dedent``
+    code: dedent``,
+    isCode: false,
+    isSolution: false
   }
 
   onAddPseudocode = (values) => {
     if (values) {
       this.setState({
-        pseudocode: [...this.state.pseudocode, values.pseudocode]
+        pseudocode: [...this.state.pseudocode, values.pseudocode],
+        isCode: false
       });
     }
   }
@@ -53,9 +57,9 @@ class NewChallengeForm extends React.Component {
   onAddCode = () => {
     if (this.state.code) {
       this.setState({
-        solutions: [...this.state.solutions, this.state.code]
+        solutions: [...this.state.solutions, this.state.code],
+        isSolution: false
       }, () => {
-        console.log(this.state.code, this.state.solutions);
         this.setState({
           code: dedent``
         });
@@ -80,11 +84,20 @@ class NewChallengeForm extends React.Component {
   };
 
   onSubmitChallenge = ({ title, question }) => {
+    if (this.state.pseudocode.length === 0) {
+      this.setState({ isCode: true });
+      return;
+    }
+
+    if (this.state.solutions.length === 0) {
+      this.setState({ isSolution: true });
+      return
+    }
     this.setState({
       title,
-      question
-    }, () => {
-      console.log(this.state, '==================');
+      question,
+      isCode: false,
+      isSolution: false
     });
   }
 
@@ -94,11 +107,13 @@ class NewChallengeForm extends React.Component {
       <div className="container">
         <div className="row">
           <div className="col s6 offset-s3" style={{ marginTop: "40px" }}>
+            <h4 style={{marginBottom: "30px"}}>Add a new code challenge</h4>
             <form onSubmit={this.props.handleSubmit(value => this.onSubmitChallenge(value))}>
               <Field key="title" component={ChallengeField} type="text" label="Title" name="title" />
               <Field key="question" component={ChallengeField} type="text" label="Question" name="question" />
               <Field key="pseudocode" component={ChallengeField} type="text" label="Pseudocode" name="pseudocode" />
               <a className="waves-effect waves-light btn-small" onClick={() => this.onAddPseudocode(formValues)}><i className="material-icons right">add_circle_outline</i>add</a>
+              {this.state.isCode && <div className="error-pseudocode"><span>Pls, add your pseudocode</span></div>}
               {(this.state.pseudocode.length > 0) && <ul className="collection with-header" >
                 <li className="collection-header"><h5>Pseudocodes</h5></li>
                 {this.state.pseudocode.map((item, i) => (
@@ -126,6 +141,7 @@ class NewChallengeForm extends React.Component {
                     marginTop: 10,
                   }}
                 />
+                {this.state.isSolution && <div className="error-code"><span>Pls, you should add code solution </span></div>}
                 <a className="waves-effect waves-light btn-small" onClick={this.onAddCode} ><i className="material-icons right">add_circle_outline</i>add</a>
 
                 {
@@ -147,7 +163,14 @@ class NewChallengeForm extends React.Component {
                   ))
                 }
               </div>
-              <button type="submit" className="teal btn-flat right white-text">
+              <button type="submit" className="teal btn-flat right white-text" onClick={() => {
+                this.props.submitChallenge({
+                  title: this.state.title,
+                  question: this.state.question,
+                  solutions: this.state.solutions,
+                  pseudocode: this.state.pseudocode
+                }, this.props.histroy)
+              }} >
                 Submit
               <i className="material-icons right">done</i>
               </button>
