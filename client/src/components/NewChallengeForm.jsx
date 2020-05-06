@@ -21,12 +21,6 @@ import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 require('prismjs/components/prism-jsx');
 
-const code = function add(a, b) {
-  return a + b;
-};
-
-
-
 const FIELDS = [
   { label: 'Title', name: 'title' },
   { label: 'Question', name: 'question' },
@@ -98,16 +92,23 @@ class NewChallengeForm extends React.Component {
       question,
       isCode: false,
       isSolution: false
+    }, () => {
+      this.props.submitBeginner({
+        title: this.state.title,
+        question: this.state.question,
+        pseudocode: this.state.pseudocode,
+        solutions: this.state.solutions
+      }, this.props.history)
     });
   }
 
   render() {
-    const { formValues, sutmitBeginner, history } = this.props;
+    const { formValues, submitBeginner, history } = this.props;
     return (
       <div className="container">
         <div className="row">
           <div className="col s6 offset-s3" style={{ marginTop: "40px" }}>
-            <h4 style={{marginBottom: "30px"}}>Add a new code challenge</h4>
+            <h4 style={{ marginBottom: "30px" }}>Add a new code challenge</h4>
             <form onSubmit={this.props.handleSubmit(value => this.onSubmitChallenge(value))}>
               <Field key="title" component={ChallengeField} type="text" label="Title" name="title" />
               <Field key="question" component={ChallengeField} type="text" label="Question" name="question" />
@@ -163,14 +164,7 @@ class NewChallengeForm extends React.Component {
                   ))
                 }
               </div>
-              <button type="submit" className="teal btn-flat right white-text" onClick={() => {
-                this.props.submitChallenge({
-                  title: this.state.title,
-                  question: this.state.question,
-                  solutions: this.state.solutions,
-                  pseudocode: this.state.pseudocode
-                }, this.props.histroy)
-              }} >
+              <button type="submit" className="teal btn-flat right white-text">
                 Submit
               <i className="material-icons right">done</i>
               </button>

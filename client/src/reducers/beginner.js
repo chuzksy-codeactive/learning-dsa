@@ -1,11 +1,23 @@
-import { FETCH_BEGINNER, CREATING_BEGINNER_CHALLENGE } from './../actions/types';
+import {
+  FETCH_BEGINNER,
+  FETCHING_BEGINNER,
+  CREATING_BEGINNER,
+  CREATE_BEGINNER
+} from './../actions/types';
 
-const beginnerReducer = (state = [], action) => {
+const initialState = {
+  beginner: [],
+  loading: false,
+}
+
+const beginnerReducer = (state = initialState, action) => {
   switch (action.type) {
+    case FETCHING_BEGINNER:
+      return { ...state, loading: true }
     case FETCH_BEGINNER:
-      return action.payload;
-    case CREATING_BEGINNER_CHALLENGE:
-      return true;
+      return { ...state, beginner: action.payload, loading: false };
+    case CREATING_BEGINNER:
+      return { ...state, loading: true };
     default:
       return state;
   }

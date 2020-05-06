@@ -1,15 +1,25 @@
 import axios from 'axios';
-import { FETCH_BEGINNER, CREATING_BEGINNER_CHALLENGE } from './types';
+import {FETCHING_BEGINNER, FETCH_BEGINNER, CREATING_BEGINNER } from './types';
+
+export const fetchingBeginner = () => ({
+  type: FETCHING_BEGINNER
+});
+
+export const fetchBeginnerSuccess = (payload) => ({
+  type: FETCH_BEGINNER,
+  payload
+});
 
 export const fetchBeginner = () =>
   async (dispatch) => {
+    dispatch(fetchingBeginner());
     const res = await axios.get('/api/beginners/challenges');
 
     dispatch({ type: FETCH_BEGINNER, payload: res.data });
   }
 
 export const creatingBeginnerChallenge = () => ({
-  type: CREATING_BEGINNER_CHALLENGE
+  type: CREATING_BEGINNER
 })
 
 export const submitBeginner = (values, history) =>
@@ -17,7 +27,6 @@ export const submitBeginner = (values, history) =>
     dispatch(creatingBeginnerChallenge());
     const res = await axios.post('/api/beginners/challenges', values);
 
-    history.push('/beginners');
+    history.push('/beginner');
     dispatch({ type: FETCH_BEGINNER, payload: res.data });
   }
-
