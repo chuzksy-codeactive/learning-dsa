@@ -3,9 +3,11 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 
 import Sidebar from './Sidebar';
 import Content from './Content';
-import beginner from '../data/beginner';
+// import beginner from '../data/beginner';
+import * as actions from '../actions';
 
 import '../styles/css/Layout.css';
+import { connect } from 'react-redux';
 
 class Layout extends React.Component {
   state = {
@@ -15,10 +17,10 @@ class Layout extends React.Component {
   };
 
   componentDidMount() {
-    this.setState({
-      titles: beginner.map(item => ({ id: item.id, title: item.title })),
-      contents: beginner
-    });
+    // this.setState({
+    //   titles: beginner.map(item => ({ id: item.id, title: item.title })),
+    //   contents: beginner
+    // });
   }
 
   onClickSidebar = (challengeId) => {
@@ -26,21 +28,22 @@ class Layout extends React.Component {
   }
 
   render() {
+    const { beginner } = this.props;
     return (
       <div className="layout">
-        <Sidebar titles={this.state.titles} onClickSidebar={this.onClickSidebar} />
+        <Sidebar titles={beginner && beginner.map(item => ({ id: item._id, title: item.title }))} onClickSidebar={this.onClickSidebar} />
         <Switch>
           {
             !this.props.match.params.id &&
-              <Route exact path={`${this.props.match.path}`}>
-                <Content contents={this.state.contents[0]} />
-              </Route>
+            <Route exact path={`${this.props.match.path}`}>
+              <Content contents={beginner && beginner[0]} />
+            </Route>
           }
           {
             this.state.challengeId &&
             (
               <Route path={`${this.props.match.path}/:id`}>
-                <Content contents={this.state.contents.find(item => item.id === this.state.challengeId)} />
+                <Content contents={beginner && beginner.find(item => item._id === this.state.challengeId)} />
               </Route>
             )
           }
@@ -50,4 +53,9 @@ class Layout extends React.Component {
   }
 }
 
-export default withRouter(Layout);
+const mapStateToProps = (state) => ({
+  beginner: state.beginners.beginner,
+  loading: state.beginners.loading
+});
+
+export default connect(mapStateToProps, actions)(withRouter(Layout));

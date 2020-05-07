@@ -1,10 +1,25 @@
 import React from 'react'
 import Layout from './Layout'
+import { connect } from 'react-redux';
+import * as actions from '../actions';
 
-const Beginner = () => (
-  <div className="container">
-    <Layout />
-  </div>
-);
+class Beginner extends React.Component {
+  componentDidMount() {
+    this.props.fetchBeginner();
+  }
 
-export default Beginner;
+  render() {
+    return (
+      <div className="container">
+        <Layout beginner={this.props.beginner} />
+      </div>
+    )
+  }
+}
+
+const mapStateToProps = (state) => ({
+  beginner: state.beginners.beginner,
+  loading: state.beginners.loading
+});
+
+export default connect(mapStateToProps, actions)(Beginner);

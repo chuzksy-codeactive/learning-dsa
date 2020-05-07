@@ -2,7 +2,6 @@ import {
   FETCH_BEGINNER,
   FETCHING_BEGINNER,
   CREATING_BEGINNER,
-  CREATE_BEGINNER
 } from './../actions/types';
 
 const initialState = {

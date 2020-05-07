@@ -18,7 +18,9 @@ module.exports = (app) => {
     res.send(challenge);
   });
 
-  app.get('/api/beginners/challenges', (req, res) => {
-    res.send({ title: 'monkey' });
+  app.get('/api/beginners/challenges', async (req, res) => {
+    const beginner = await Beginner.find();
+
+    res.send(beginner);
   });
 }
