@@ -103,7 +103,6 @@ class NewChallengeForm extends React.Component {
   }
 
   render() {
-    const { formValues, submitBeginner, history } = this.props;
     return (
       <div className="container">
         <div className="row">
@@ -113,7 +112,7 @@ class NewChallengeForm extends React.Component {
               <Field key="title" component={ChallengeField} type="text" label="Title" name="title" />
               <Field key="question" component={ChallengeField} type="text" label="Question" name="question" />
               <Field key="pseudocode" component={ChallengeField} type="text" label="Pseudocode" name="pseudocode" />
-              <a className="waves-effect waves-light btn-small" onClick={() => this.onAddPseudocode(formValues)}><i className="material-icons right">add_circle_outline</i>add</a>
+              <a className="waves-effect waves-light btn-small" onClick={() => this.onAddPseudocode(this.props.formValues)}><i className="material-icons right">add_circle_outline</i>add</a>
               {this.state.isCode && <div className="error-pseudocode"><span>Pls, add your pseudocode</span></div>}
               {(this.state.pseudocode.length > 0) && <ul className="collection with-header" >
                 <li className="collection-header"><h5>Pseudocodes</h5></li>
@@ -168,6 +167,9 @@ class NewChallengeForm extends React.Component {
                 Submit
               <i className="material-icons right">done</i>
               </button>
+              {this.props.loading && <div className="progress">
+                <div className="indeterminate"></div>
+              </div>}
             </form>
           </div>
         </div>
@@ -190,10 +192,9 @@ const validate = (values) => {
 
 const mapStateToProps = (state) => {
   return {
-    formValues: state.form.challengeForm?.values
+    formValues: state.form.challengeForm?.values,
+    loading: state.beginners.loading
   }
 }
-
-
 
 export default connect(mapStateToProps, actions)(reduxForm({ validate, form: 'challengeForm' })(withRouter(NewChallengeForm)));
